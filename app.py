@@ -24,12 +24,26 @@ def get_tasks():
 
 from flask import abort
 
-@app.route('/todo/api/v1.0/tasks/<int:task_id>', methods=['GET'])
+@app.route('/show-tell/api/v1.0/<string:task_id>', methods=['GET'])
 def get_task(task_id):
-    task = [task for task in tasks if task['id'] == task_id]
-    if len(task) == 0:
-        abort(404)
-    return jsonify({'task': task[0]})
+    
+    return jsonify({'return value': task_id})
+    
 
 if __name__ == '__main__':
     app.run(debug=True)
+
+
+
+# Archive
+
+# task = [task for task in tasks if task['id'] == task_id]
+    # if len(task) == 0:
+    #     abort(404)
+    # return jsonify({'task': task[0]})
+    # if len(task_id) == 0:
+    #     abort(404)
+    # if (task_id == 1):
+    #     return jsonify({'task': tasks[0]})
+    # elif (task_id == 2):
+    #     return jsonify({'task': tasks[1]})
