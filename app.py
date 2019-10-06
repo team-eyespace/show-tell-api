@@ -3,32 +3,26 @@ from flask import abort
 
 app = Flask(__name__)
 
-tasks = [
+#API description
+apiDescription = [
     {
-        'id': 1,
-        'title': u'Buy groceries',
-        'description': u'Milk, Cheese, Pizza, Fruit, Tylenol', 
-        'done': False
-    },
-    {
-        'id': 2,
-        'title': u'Learn Python',
-        'description': u'Need to find a good Python tutorial on the web', 
-        'done': False
+        'title': u'Show and Tell API',
+        'description': u'Eyespace API hosted on a compute engine instance', 
+        'Author': u'Team Eyespace'
     }
 ]
 
-@app.route('/todo/api/v1.0/tasks', methods=['GET'])
+@app.route('/show-tell/api/v1.0/tasks', methods=['GET'])
 def get_tasks():
-    return jsonify({'tasks': tasks})
+    return jsonify({'Description': apiDescription[0]})
 
 
 
 
-@app.route('/show-tell/api/v1.0/<string:task_id>', methods=['GET'])
-def get_task(task_id):
+@app.route('/show-tell/api/v1.0/<string:image_code>', methods=['GET'])
+def get_task(image_code):
     
-    return_value = task_id + add_string(task_id)
+    return_value = image_code + add_string(image_code)
     return jsonify({'return value': return_value})
 
 
