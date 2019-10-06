@@ -1,4 +1,5 @@
 from flask import Flask, jsonify
+from flask import abort
 
 app = Flask(__name__)
 
@@ -22,13 +23,20 @@ def get_tasks():
     return jsonify({'tasks': tasks})
 
 
-from flask import abort
+
 
 @app.route('/show-tell/api/v1.0/<string:task_id>', methods=['GET'])
 def get_task(task_id):
     
-    return jsonify({'return value': task_id})
-    
+    return_value = task_id + add_string(task_id)
+    return jsonify({'return value': return_value})
+
+
+
+# Helper Functions 
+
+def add_string(input):
+    return input + "yeeet"
 
 if __name__ == '__main__':
     app.run(debug=True)
