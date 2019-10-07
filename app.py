@@ -17,8 +17,6 @@ def get_tasks():
     return jsonify({'Description': apiDescription[0]})
 
 
-
-
 @app.route('/show-tell/api/v1.0/<string:image_code>', methods=['GET'])
 def get_task(image_code):
     
