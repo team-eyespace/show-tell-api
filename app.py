@@ -14,13 +14,13 @@ apiDescription = [
 
 @app.route('/show-tell/api/v1.0/about', methods=['GET'])
 def get_tasks():
-    return jsonify({'Description': apiDescription[0]})
+    return jsonify({'description': apiDescription[0]})
 
 @app.route('/show-tell/api/v1.0/<string:image_code>', methods=['GET'])
 def get_task(image_code):
     
     return_value = add_string(image_code)
-    return jsonify({'return value': return_value})
+    return jsonify({'description': return_value})
 
 
 # Helper Functions 
