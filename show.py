@@ -19,6 +19,9 @@ from glob import glob
 from PIL import Image
 import pickle
 
+
+# Download and Prepare Dataset MS-COCO
+
 annotation_zip = tf.keras.utils.get_file('captions.zip',
                                           cache_subdir=os.path.abspath('.'),
                                           origin = 'http://images.cocodataset.org/annotations/annotations_trainval2014.zip',
@@ -35,6 +38,40 @@ if not os.path.exists(os.path.abspath('.') + '/' + name_of_zip):
 else:
   PATH = os.path.abspath('.')+'/train2014/'
 
+
+#Limit the size of the Training Set
+
+# Read the json file
+with open(annotation_file, 'r') as f:
+    annotations = json.load(f)
+
+# Store captions and image names in vectors
+all_captions = []
+all_img_name_vector = []
+
+for annot in annotations['annotations']:
+    caption = '<start> ' + annot['caption'] + ' <end>'
+    image_id = annot['image_id']
+    full_coco_image_path = PATH + 'COCO_train2014_' + '%012d.jpg' % (image_id)
+
+    all_img_name_vector.append(full_coco_image_path)
+    all_captions.append(caption)
+
+# Shuffle captions and image_names together
+# Set a random state
+train_captions, img_name_vector = shuffle(all_captions,
+                                          all_img_name_vector,
+                                          random_state=1)
+
+# Select the first 30000 captions from the shuffled set
+num_examples = 30000
+train_captions = train_captions[:num_examples]
+img_name_vector = img_name_vector[:num_examples]
+
+
+
+
+#Preprocess the images using Inception V3
 def load_image(image_path):
     img = tf.io.read_file(image_path)
     img = tf.image.decode_jpeg(img, channels=3)
@@ -43,12 +80,15 @@ def load_image(image_path):
     return img, image_path
 
 
+#Initialize InceptV3 and load the Imagenet Weights
 image_model = tf.keras.applications.InceptionV3(include_top=False,
                                                 weights='imagenet')
 new_input = image_model.input
 hidden_layer = image_model.layers[-1].output
 
 image_features_extract_model = tf.keras.Model(new_input, hidden_layer)
+
+#Caching the features extracted from InceptionV3
 
 # Get unique images
 encode_train = sorted(set(img_name_vector))
@@ -58,7 +98,7 @@ image_dataset = tf.data.Dataset.from_tensor_slices(encode_train)
 image_dataset = image_dataset.map(
   load_image, num_parallel_calls=tf.data.experimental.AUTOTUNE).batch(16)
 
-for img, path in image_dataset:
+for img, path in tqdm(image_dataset):
   batch_features = image_features_extract_model(img)
   batch_features = tf.reshape(batch_features,
                               (batch_features.shape[0], -1, batch_features.shape[3]))
@@ -67,19 +107,26 @@ for img, path in image_dataset:
     path_of_feature = p.numpy().decode("utf-8")
     np.save(path_of_feature, bf.numpy())
 
+
+#Preprocess and tokenize the captions
+
 # Find the maximum length of any caption in our dataset
 def calc_max_length(tensor):
     return max(len(t) for t in tensor)
 
+
+# Choose the top 5000 words from the vocabulary
 top_k = 5000
 tokenizer = tf.keras.preprocessing.text.Tokenizer(num_words=top_k,
                                                   oov_token="<unk>",
                                                   filters='!"#$%&()*+.,-/:;=?@[\]^_`{|}~ ')
 tokenizer.fit_on_texts(train_captions)
-train_seqs = tokenizer.texts_to_sequences(train_captions
+train_seqs = tokenizer.texts_to_sequences(train_captions)
+
 
 tokenizer.word_index['<pad>'] = 0
 tokenizer.index_word[0] = '<pad>'
+
 
 # Create the tokenized vectors
 train_seqs = tokenizer.texts_to_sequences(train_captions)
@@ -91,13 +138,19 @@ cap_vector = tf.keras.preprocessing.sequence.pad_sequences(train_seqs, padding='
 # Calculates the max_length, which is used to store the attention weights
 max_length = calc_max_length(train_seqs)
 
+#Split the data into training and testing 
+
 # Create training and validation sets using an 80-20 split
 img_name_train, img_name_val, cap_train, cap_val = train_test_split(img_name_vector,
                                                                     cap_vector,
                                                                     test_size=0.2,
                                                                     random_state=0)
 
+
 len(img_name_train), len(cap_train), len(img_name_val), len(cap_val)
+
+
+#Create a tf.data dataset for training
 
 # Feel free to change these parameters according to your system's configuration
 
@@ -128,6 +181,8 @@ dataset = dataset.map(lambda item1, item2: tf.numpy_function(
 dataset = dataset.shuffle(BUFFER_SIZE).batch(BATCH_SIZE)
 dataset = dataset.prefetch(buffer_size=tf.data.experimental.AUTOTUNE)
 
+
+#Training
 
 class BahdanauAttention(tf.keras.Model):
   def __init__(self, units):
@@ -217,6 +272,7 @@ class RNN_Decoder(tf.keras.Model):
 encoder = CNN_Encoder(embedding_dim)
 decoder = RNN_Decoder(embedding_dim, units, vocab_size)
 
+
 optimizer = tf.keras.optimizers.Adam()
 loss_object = tf.keras.losses.SparseCategoricalCrossentropy(
     from_logits=True, reduction='none')
@@ -231,15 +287,19 @@ def loss_function(real, pred):
   return tf.reduce_mean(loss_)
 
 
+#Checkpoint 
+
 checkpoint_path = "./checkpoints/train"
 ckpt = tf.train.Checkpoint(encoder=encoder,
                            decoder=decoder,
                            optimizer = optimizer)
 ckpt_manager = tf.train.CheckpointManager(ckpt, checkpoint_path, max_to_keep=5)
 
+
 start_epoch = 0
 if ckpt_manager.latest_checkpoint:
   start_epoch = int(ckpt_manager.latest_checkpoint.split('-')[-1])
+
 
 # adding this in a separate cell because if you run the training cell
 # many times, the loss_plot array will be reset
@@ -278,6 +338,7 @@ def train_step(img_tensor, target):
 
   return loss, total_loss
 
+
 EPOCHS = 20
 
 for epoch in range(start_epoch, EPOCHS):
@@ -307,6 +368,3 @@ plt.xlabel('Epochs')
 plt.ylabel('Loss')
 plt.title('Loss Plot')
 plt.show()
-
-
-
