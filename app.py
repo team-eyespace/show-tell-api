@@ -16,10 +16,10 @@ apiDescription = [
 def get_tasks():
     return jsonify({'description': apiDescription[0]})
 
-@app.route('/show-tell/api/v1.0/<string:image_code>', methods=['GET'])
-def get_task(image_code):
+@app.route('/show-tell/api/v1.0/<string:test_code>', methods=['GET'])
+def get_task(test_code):
     
-    return_value = add_string(image_code)
+    return_value = add_string(test_code)
     return jsonify({'description': return_value})
 
 
@@ -31,6 +31,9 @@ def get_task(image_code):
 
 
 # Helper Functions 
+
+def evaluate(image):
+    return true
 
 def add_string(input):
     return input + "yeeet"
