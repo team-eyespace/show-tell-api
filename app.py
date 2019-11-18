@@ -23,6 +23,13 @@ def get_task(image_code):
     return jsonify({'description': return_value})
 
 
+@app.route('/show-tell/api/v2.0/<string:image_code>', methods=['GET'])
+def get_task(image_code):
+    
+    return_value = add_string(image_code)
+    return jsonify({'description': return_value})
+
+
 # Helper Functions 
 
 def add_string(input):
