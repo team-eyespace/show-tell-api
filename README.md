@@ -10,9 +10,12 @@ Neural Image Captiion Generator - Show and Tell for project [EyeSpace](www.eyesp
 
 What things you need to install the software and how to install them
 
-```
-Give examples
-```
+* python 3.6.8
+* keras 2.2.4 tensorflow backend
+* numpy 1.15.4
+* nltk 3.4
+* PIL 5.4.1
+* tensorflow
 
 ### Installing
 
