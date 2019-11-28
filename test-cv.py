@@ -5,7 +5,6 @@ import matplotlib.pyplot as plt
 import matplotlib.image as mpimg
 from keras.models import load_model
 
-
 from preprocessing.image import extract_features, extract_feature_from_image
 from preprocessing.text import create_tokenizer
 from NIC import greedy_inference_model, image_dense_lstm, text_emb_lstm
@@ -33,9 +32,7 @@ NIC_image_dense_lstm = image_dense_lstm()
 NIC_image_dense_lstm.load_weights(model_dir, by_name = True, skip_mismatch=True)
 
 def generate_caption_from_file(file_dir, beam_width = 5, alpha = 0.7):
-    # Encoder
     img_feature = extract_feature_from_image(file_dir)
-    # Decoder
     a0, c0 = NIC_image_dense_lstm.predict([img_feature, np.zeros([1, 512]), np.zeros([1, 512])])
     
     res = beam_search(NIC_text_emb_lstm, a0, c0, tokenizer, beam_width, max_len, alpha)
@@ -48,7 +45,7 @@ from PIL import Image
 img_file = './put-your-image-here/test5.jpg'
 
 # display image
-# img = mpimg.imread(image_file_dir)
+# img = mpimg.imread(img_file)
 # plt.imshow(img)
 
 #generate caption
