@@ -1,6 +1,6 @@
 # Show & Tell API
 
-Neural Image Captiion Generator - Show and Tell for project [EyeSpace](https://eyespace.app/). Project was inspired by [Show and Tell: A Neural Image Caption Generator](https://arxiv.org/pdf/1411.4555.pdf).
+Neural Image Caption Generator - Show and Tell for project [EyeSpace](https://eyespace.app/). Project was inspired by [Show and Tell: A Neural Image Caption Generator](https://arxiv.org/pdf/1411.4555.pdf).
 
 ## Getting Started
 
@@ -16,6 +16,7 @@ What things you need to install the software and how to install them
 * nltk 3.4
 * PIL 5.4.1
 * tensorflow
+* matplotlib
 
 ### Installing
 
