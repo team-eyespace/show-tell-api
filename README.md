@@ -16,6 +16,7 @@ What things you need to install the software and how to install them
 * nltk 3.4
 * PIL 5.4.1
 * tensorflow
+* matplotlib
 
 ### Installing
 
