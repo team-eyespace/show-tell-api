@@ -1,5 +1,9 @@
+#Server Dependencies 
 from flask import Flask, jsonify
 from flask import abort
+
+#Computer Vision Dependencies
+
 
 app = Flask(__name__)
 
