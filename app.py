@@ -2,6 +2,7 @@
 from flask import Flask, jsonify
 from flask import abort
 from flask import make_response
+from flask import request
 
 #Computer Vision Dependencies
 import os
@@ -62,10 +63,12 @@ def get_tasks():
     return jsonify({'description': apiDescription[0]})
 
 
-@app.route('/test/<path:pars>', methods=['POST'])
-def get_task(image_code):
+@app.route('/test', methods=['POST'])
+def get_task():
+    if not request.json or not 'image' in request.json:
+        abort(400)
     
-    im = Image.open(BytesIO(base64.b64decode(image_code)))
+    im = Image.open(BytesIO(base64.b64decode(request.json['image'])))
     im.save('image.jpg', 'JPEG')
     
     img_file = './image.jpg'
