@@ -21,30 +21,6 @@ from PIL import Image
 from io import BytesIO
 
 
-from keras import backend as K
-
-
-# use training token set to create vocabulary
-train_dir = './datasets/Flickr8k_text/Flickr_8k.trainImages.txt'
-token_dir = './datasets/Flickr8k_text/Flickr8k.token.txt'
-# the current best trained model
-model_dir = './model-params/current_best.h5'
-
-# load vocabulary
-tokenizer = create_tokenizer(train_dir, token_dir, start_end = True, use_all=True)
-
-# set relevent parameters
-vocab_size  = tokenizer.num_words or (len(tokenizer.word_index)+1)
-max_len = 24 # use 24 as maximum sentence's length when training the model
-
-
-# prepare inference model
-NIC_text_emb_lstm = text_emb_lstm(vocab_size)
-NIC_text_emb_lstm.load_weights(model_dir, by_name = True, skip_mismatch=True)
-NIC_image_dense_lstm = image_dense_lstm()
-NIC_image_dense_lstm.load_weights(model_dir, by_name = True, skip_mismatch=True)
-
-
 
 app = Flask(__name__)
 
@@ -66,32 +42,37 @@ def get_tasks():
     return jsonify({'description': apiDescription[0]})
 
 
-@app.route('/test', methods=['GET'])
+@app.route('/test', methods=['POST'])
 def get_task():
-    # if not request.json or not 'image' in request.json:
-    #     abort(400)
+    if not request.json or not 'image' in request.json:
+        abort(400)
     
-    # im = Image.open(BytesIO(base64.b64decode(request.json['image'])))
-    # im.save('image.jpg', 'JPEG')
+    im = Image.open(BytesIO(base64.b64decode(request.json['image'])))
+    im.save('image.jpg', 'JPEG')
     
-    img_file = './image.jpg'
-
-    # display image
-    # img = mpimg.imread(img_file)
-    # plt.imshow(img)
-
-    #generate caption
-    caption = generate_caption_from_file(img_file)
-    plt.show()
-
-    print(caption)
+    file_dir = './image.jpg'
     
-    return jsonify({'description': caption})
+    # use training token set to create vocabulary
+    train_dir = './datasets/Flickr8k_text/Flickr_8k.trainImages.txt'
+    token_dir = './datasets/Flickr8k_text/Flickr8k.token.txt'
+    # the current best trained model
+    model_dir = './model-params/current_best.h5'
 
+    # load vocabulary
+    tokenizer = create_tokenizer(train_dir, token_dir, start_end = True, use_all=True)
 
-# Helper Functions 
+    # set relevent parameters
+    vocab_size  = tokenizer.num_words or (len(tokenizer.word_index)+1)
+    max_len = 24 # use 24 as maximum sentence's length when training the model
 
-def generate_caption_from_file(file_dir, beam_width = 5, alpha = 0.7):
+    beam_width = 5
+    alpha = 0.7
+
+    # prepare inference model
+    NIC_text_emb_lstm = text_emb_lstm(vocab_size)
+    NIC_text_emb_lstm.load_weights(model_dir, by_name = True, skip_mismatch=True)
+    NIC_image_dense_lstm = image_dense_lstm()
+    NIC_image_dense_lstm.load_weights(model_dir, by_name = True, skip_mismatch=True)
 
     img_feature = extract_feature_from_image(file_dir)
     a0, c0 = NIC_image_dense_lstm.predict([img_feature, np.zeros([1, 512]), np.zeros([1, 512])])
@@ -100,7 +81,10 @@ def generate_caption_from_file(file_dir, beam_width = 5, alpha = 0.7):
     best_idx = np.argmax(res['scores'])
     caption = tokenizer.sequences_to_texts([res['routes'][best_idx]])[0]
     
-    return caption
+
+    print(caption)
+    
+    return jsonify({'description': caption})
 
 
 if __name__ == '__main__':
