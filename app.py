@@ -1,6 +1,7 @@
 #Server Dependencies 
 from flask import Flask, jsonify
 from flask import abort
+from flask import make_response
 
 #Computer Vision Dependencies
 import os
@@ -52,12 +53,16 @@ apiDescription = [
     }
 ]
 
+@app.errorhandler(404)
+def not_found(error):
+    return make_response(jsonify({'error': 'Not found'}), 404)
+
 @app.route('/show-tell/api/v1.0/about', methods=['GET'])
 def get_tasks():
     return jsonify({'description': apiDescription[0]})
 
 
-@app.route('/test/<string:image_code>', methods=['GET'])
+@app.route('/test/<path:pars>', methods=['POST'])
 def get_task(image_code):
     
     im = Image.open(BytesIO(base64.b64decode(image_code)))
