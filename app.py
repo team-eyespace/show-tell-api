@@ -63,13 +63,13 @@ def get_tasks():
     return jsonify({'description': apiDescription[0]})
 
 
-@app.route('/test', methods=['POST'])
+@app.route('/test>', methods=['GET'])
 def get_task():
-    if not request.json or not 'image' in request.json:
-        abort(400)
+    # if not request.json or not 'image' in request.json:
+    #     abort(400)
     
-    im = Image.open(BytesIO(base64.b64decode(request.json['image'])))
-    im.save('image.jpg', 'JPEG')
+    # im = Image.open(BytesIO(base64.b64decode(request.json['image'])))
+    # im.save('image.jpg', 'JPEG')
     
     img_file = './image.jpg'
 
@@ -100,4 +100,4 @@ def generate_caption_from_file(file_dir, beam_width = 5, alpha = 0.7):
 
 
 if __name__ == '__main__':
-    app.run(debug=True, host='0.0.0.0', port=80)
+    app.run(debug=False, host='0.0.0.0', port=80)
