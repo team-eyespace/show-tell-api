@@ -56,28 +56,8 @@ apiDescription = [
 def get_tasks():
     return jsonify({'description': apiDescription[0]})
 
-@app.route('/test/<string:test_code>', methods=['GET'])
-def get_task(test_code):
-    
-    im = Image.open(BytesIO(base64.b64decode(test_code)))
-    im.save('image.jpg', 'JPEG')
-    
-    img_file = './image.jpg'
 
-    # display image
-    # img = mpimg.imread(img_file)
-    # plt.imshow(img)
-
-    #generate caption
-    caption = generate_caption_from_file(img_file)
-    plt.show()
-
-    print(caption)
-    
-    return jsonify({'description': caption})
-
-
-@app.route('/show-tell/api/v1.0/<string:image_code>', methods=['GET'])
+@app.route('/test/<string:image_code>', methods=['GET'])
 def get_task(image_code):
     
     im = Image.open(BytesIO(base64.b64decode(image_code)))
