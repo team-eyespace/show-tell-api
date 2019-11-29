@@ -21,6 +21,9 @@ from PIL import Image
 from io import BytesIO
 
 
+from keras import backend as K
+
+
 # use training token set to create vocabulary
 train_dir = './datasets/Flickr8k_text/Flickr_8k.trainImages.txt'
 token_dir = './datasets/Flickr8k_text/Flickr8k.token.txt'
@@ -63,7 +66,7 @@ def get_tasks():
     return jsonify({'description': apiDescription[0]})
 
 
-@app.route('/test>', methods=['GET'])
+@app.route('/test', methods=['GET'])
 def get_task():
     # if not request.json or not 'image' in request.json:
     #     abort(400)
@@ -89,6 +92,7 @@ def get_task():
 # Helper Functions 
 
 def generate_caption_from_file(file_dir, beam_width = 5, alpha = 0.7):
+
     img_feature = extract_feature_from_image(file_dir)
     a0, c0 = NIC_image_dense_lstm.predict([img_feature, np.zeros([1, 512]), np.zeros([1, 512])])
     
@@ -100,4 +104,4 @@ def generate_caption_from_file(file_dir, beam_width = 5, alpha = 0.7):
 
 
 if __name__ == '__main__':
-    app.run(debug=False, host='0.0.0.0', port=80)
+    app.run(debug=True, host='0.0.0.0', port=80)
