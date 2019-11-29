@@ -41,7 +41,6 @@ def not_found(error):
 def get_tasks():
     return jsonify({'description': apiDescription[0]})
 
-
 @app.route('/test', methods=['POST'])
 def get_task():
     if not request.json or not 'image' in request.json:
