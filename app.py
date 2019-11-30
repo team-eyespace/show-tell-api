@@ -39,13 +39,13 @@ def not_found(error):
 def get_tasks():
     return jsonify({'description': apiDescription[0]})
 
-@app.route('/test', methods=['POST'])
+@app.route('/test', methods=['GET'])
 def get_task():
-    if not request.json or not 'image' in request.json:
-        abort(400)
+    # if not request.json or not 'image' in request.json:
+    #     abort(400)
     
-    im = Image.open(BytesIO(base64.b64decode(request.json['image'])))
-    im.save('image.jpg', 'JPEG')
+    # im = Image.open(BytesIO(base64.b64decode(request.json['image'])))
+    # im.save('image.jpg', 'JPEG')
     
     file_dir = './image.jpg'
     
