@@ -26,7 +26,7 @@ To start the server:
 ```
 sudo python app.py
 
->curl -X POST -d @request.json http://12.12.12.12/test --header "Content-Type:application/json"
+curl -X POST -d @request.json http://12.12.12.12/test --header "Content-Type:application/json"
 ```
 
 ## Built With
