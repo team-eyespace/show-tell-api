@@ -23,10 +23,13 @@ To start the server:
 
 ```
 sudo python app.py
-
-curl -X POST -d @request.json http://12.12.12.12/test --header "Content-Type:application/json"
 ```
+### Testing
 
+To test from a local machine:
+```
+curl -X POST -d @request.json http://ip.ad.dre.ss/test --header "Content-Type:application/json"
+```
 ## Built With
 
 * [Flask](http://flask.palletsprojects.com/en/1.1.x/) - Python Server for the API
