@@ -8,8 +8,6 @@ Neural Image Caption Generator - Show and Tell for project [EyeSpace](https://ey
 
 ### Dependencies 
 
-What things you need to install the software and how to install them
-
 * python 3.6.8
 * keras 2.2.4 
 * numpy 1.15.4
