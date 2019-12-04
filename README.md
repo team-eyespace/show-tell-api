@@ -19,7 +19,7 @@ Neural Image Caption Generator - Show and Tell for project [EyeSpace](https://ey
 
 ### Installing
 
-To start the server:
+To start the development server:
 
 ```
 sudo python app.py
