@@ -36,11 +36,11 @@ def not_found(error):
     return make_response(jsonify({'error': 'Not found'}), 404)
 
 @app.route('/show-tell/api/v1.0/about', methods=[''])
-def get_tasks():
+def get_task():
     return jsonify({'description': apiDescription[0]})
 
 @app.route('/test', methods=['post'])
-def get_task():
+def post_task():
     if not request.json or not 'image' in request.json:
         abort(400)
     
