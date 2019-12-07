@@ -16,13 +16,14 @@ Neural Image Caption Generator - Show and Tell for project [EyeSpace](https://ey
 * tensorflow
 * matplotlib
 * Flask
+* PM2 (for deployment)
 
 ### Installing
 
 To start the development server:
 
 ```
-sudo python app.py
+sudo pm2 start app.py
 ```
 ### Testing
 
