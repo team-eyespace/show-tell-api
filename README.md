@@ -16,7 +16,7 @@ Neural Image Caption Generator - Show and Tell for project [EyeSpace](https://ey
 * tensorflow
 * matplotlib
 * Flask
-* PM2 (for deployment)
+* PM2
 
 ### Installing
 
@@ -35,6 +35,7 @@ curl -X POST -d @request.json http://ip.ad.dre.ss/test --header "Content-Type:ap
 
 * [Flask](http://flask.palletsprojects.com/en/1.1.x/) - Python Server for the API
 * [Keras](https://keras.io/) - API on Tensorflow for the Model
+* [PM2](https://pm2.keymetrics.io/) - For Loadbalancing and Deployment
 <!-- 
 ## Contributing
 
