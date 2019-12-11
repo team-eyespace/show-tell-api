@@ -19,8 +19,13 @@ Neural Image Caption Generator - Show and Tell for project [EyeSpace](https://ey
 * PM2
 
 ### Installing
-
 To start the development server:
+
+```
+python3 app.py
+```
+
+To start the production server:
 
 ```
 sudo pm2 start app.py --name show-tell-api --interpreter=python3
