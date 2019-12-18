@@ -42,7 +42,7 @@ def generate_caption_from_file(file_dir, beam_width = 5, alpha = 0.7):
     return caption
 
 from PIL import Image
-img_file = './put-your-image-here/test5.jpg'
+img_file = './image.jpg'
 
 # display image
 # img = mpimg.imread(img_file)
