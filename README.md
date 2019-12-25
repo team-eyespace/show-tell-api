@@ -58,5 +58,5 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 
 ## Acknowledgments
 
-* [soloist97/Show-And-Tell-Keras](https://github.com/soloist97/Show-And-Tell-Keras)
+* [soloist97/Show-And-Tell-Keras](https://github.com/soloist97/Show-And-Tell-Keras) - For Keras Model
 
