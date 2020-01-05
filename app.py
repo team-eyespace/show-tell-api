@@ -20,6 +20,9 @@ import base64
 from PIL import Image
 from io import BytesIO
 
+import jwt
+import json
+
 app = Flask(__name__)
 
 #API description
@@ -43,6 +46,11 @@ def get_task():
 def post_task():
     if not request.json or not 'image' in request.json:
         abort(400)
+
+    with open('secret.json') as json_file:
+        secret = json.load(json_file)['secret']
+
+    
     
     im = Image.open(BytesIO(base64.b64decode(request.json['image'])))
     im.save('image.jpg', 'JPEG')
