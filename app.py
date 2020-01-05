@@ -50,7 +50,10 @@ def post_task():
     with open('secret.json') as json_file:
         secret = json.load(json_file)['secret']
 
-    
+    try:
+        decoded = jwt.decode(query_test, secret, algorithms=['HS256'])
+    except :
+        return "error"
     
     im = Image.open(BytesIO(base64.b64decode(request.json['image'])))
     im.save('image.jpg', 'JPEG')
