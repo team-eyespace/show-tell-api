@@ -52,7 +52,7 @@ def post_task():
 
     try:
         decoded = jwt.decode(query_test, secret, algorithms=['HS256'])
-    except :
+    except:
         return "error"
     
     im = Image.open(BytesIO(base64.b64decode(request.json['image'])))
