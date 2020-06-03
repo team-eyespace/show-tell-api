@@ -6,6 +6,11 @@ verify_ssl = true
 [dev-packages]
 
 [packages]
+keras = "==2.2.4"
+pillow = "*"
+matplotlib = "*"
+tensorflow = "*"
+nltk = "*"
 
 [requires]
 python_version = "3.8"
