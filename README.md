@@ -7,7 +7,7 @@ Neural Image Caption Generator - Show and Tell for project [EyeSpace](https://ey
 ## Getting Started
 
 <!-- These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See deployment for notes on how to deploy the project on a live system. -->
-
+<!-- 
 ### Dependencies 
 
 * python 3.6.8
@@ -42,7 +42,7 @@ curl -X POST -d @request.json http://ip.ad.dre.ss/test --header "Content-Type:ap
 
 * [Flask](http://flask.palletsprojects.com/en/1.1.x/) - Python Server for the API
 * [Keras](https://keras.io/) - API on Tensorflow for the Model
-* [PM2](https://pm2.keymetrics.io/) - For Loadbalancing and Deployment
+* [PM2](https://pm2.keymetrics.io/) - For Loadbalancing and Deployment -->
 <!-- 
 ## Contributing
 
