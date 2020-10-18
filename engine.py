@@ -5,10 +5,6 @@ import matplotlib.image as mpimg
 from keras.models import load_model
 
 
-import warnings
-warnings.filterwarnings("ignore", category=FutureWarning)
-
-
 from preprocessing.image import extract_features, extract_feature_from_image
 from preprocessing.text import create_tokenizer
 from NIC import greedy_inference_model, image_dense_lstm, text_emb_lstm
@@ -48,11 +44,4 @@ def generate_caption_from_directory(file_directory):
     return img_features_dict['ids'], captions
 
 
-
-image_file_dir = './image.jpg'
-
-#generate caption
-caption = generate_caption_from_file(image_file_dir)
-
-
-print(caption[0])
+# print(generate_caption_from_file('./image.jpg'))
