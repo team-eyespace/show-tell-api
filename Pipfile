@@ -6,11 +6,15 @@ verify_ssl = true
 [dev-packages]
 
 [packages]
-keras = "*"
-numpy = "*"
-nltk = "*"
+numpy = "==1.15.4"
+nltk = "==3.4"
+keras = "==2.2.4"
+pillow = "*"
+tensorflow = "==1.14.0"
 matplotlib = "*"
-tensorflow = "==1.15.4"
+fastapi = "*"
+uvicorn = "*"
+flask = "*"
 
 [requires]
-python_version = "3.8"
+python_version = "3.7"
