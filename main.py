@@ -7,6 +7,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.image as mpimg
 from keras.models import load_model
+import time
 
 
 from preprocessing.image import extract_features, extract_feature_from_image
@@ -19,6 +20,7 @@ app = Flask(__name__)
 
 @app.route('/caption/')
 def example():
+    start = time.time()
     train_dir = './datasets/Flickr8k_text/Flickr_8k.trainImages.txt'
     token_dir = './datasets/Flickr8k_text/Flickr8k.token.txt'
     # the current best trained model
@@ -32,12 +34,12 @@ def example():
 
     NIC_inference = greedy_inference_model(vocab_size, max_len)
     NIC_inference.load_weights(model_dir, by_name = True, skip_mismatch=True)
-
     # Encoder
     img_feature = extract_feature_from_image('./image.jpg')
     # Decoder
     caption = decoder(NIC_inference, tokenizer, img_feature, True)
     print(caption[0])
+    print('It took', time.time()-start, 'seconds.')
     return {'caption': caption[0]}
 
 
