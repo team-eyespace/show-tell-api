@@ -1,6 +1,4 @@
 from flask import Flask
-# from engine import generate_caption_from_file
-
 
 import os
 import numpy as np

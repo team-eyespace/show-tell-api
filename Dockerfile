@@ -1,21 +1,14 @@
-FROM python:3.8
+FROM python:3.7
 
 # Copy Files
 
-# COPY ./datasets /datasets
-# COPY ./model-params/ /model-params
-# COPY ./preprocessing/ /preprocessing
-
-COPY Pipfile /
-COPY Pipfile.lock /
-
-COPY main.py /
+COPY ./ /
 
 # Install Dependencies
 
-RUN pip3 install fastapi uvicorn
-# RUN pipenv install --system --deploy
+RUN pip3 install pipenv
+RUN pipenv install 
 
-EXPOSE 80
+EXPOSE 5000
 
-CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "80"]
+CMD pipenv run python3 main.py
