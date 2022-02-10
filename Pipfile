@@ -7,7 +7,7 @@ verify_ssl = true
 
 [packages]
 numpy = "*"
-tensorflow = "==1.14.0"
+tensorflow = "==2.5.3"
 nltk = "==3.4"
 keras = "==2.2.4"
 pillow = "*"
